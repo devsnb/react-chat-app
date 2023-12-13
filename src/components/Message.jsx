@@ -1,19 +1,44 @@
-const Message = () => {
+import { useEffect, useRef } from 'react'
+import { useAuthValues } from '../context/AuthContext'
+import { useChatValues } from '../context/ChatContext'
+
+const Message = ({ message }) => {
+	const { currentUser } = useAuthValues()
+	const { data } = useChatValues()
+
+	const ref = useRef(null)
+
+	useEffect(() => {
+		ref.current?.scrollIntoView({ behavior: 'smooth' })
+	}, [message])
+
 	return (
-		<div className='message'>
+		<div
+			className={`message ${message.senderId === currentUser.uid && 'owner'}`}
+			ref={ref}
+		>
 			<div className='message-info'>
 				<img
-					src='https://images.unsplash.com/photo-1662351997685-57a21379d966?q=80&w=1299&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+					src={
+						message.senderId === currentUser.uid
+							? currentUser.photoURL
+							: data.user.photoURL
+					}
 					alt=''
 				/>
-				<span>just now</span>
 			</div>
 			<div className='message-content'>
-				<p>Hello</p>
-				<img
-					src='https://images.unsplash.com/photo-1662351997685-57a21379d966?q=80&w=1299&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-					alt=''
-				/>
+				<p>{message.text}</p>
+				{message.img && <img src={message.img} alt='' />}
+				<span>
+					{message.date.toDate().toLocaleTimeString([], {
+						year: 'numeric',
+						month: '2-digit',
+						day: '2-digit',
+						hour: '2-digit',
+						minute: '2-digit'
+					})}
+				</span>
 			</div>
 		</div>
 	)

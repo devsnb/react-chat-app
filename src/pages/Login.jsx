@@ -1,14 +1,13 @@
 import { useRef } from 'react'
-import { toast } from 'react-toastify'
 import { useNavigate, Link } from 'react-router-dom'
-import { signInWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '../firebase'
+import { useAuthValues } from '../context/AuthContext'
 
 const Login = () => {
 	const emailRef = useRef(null)
 	const passwordRef = useRef(null)
 
 	const navigate = useNavigate()
+	const { login } = useAuthValues()
 
 	const handleSubmit = async e => {
 		e.preventDefault()
@@ -16,12 +15,9 @@ const Login = () => {
 		const email = emailRef.current.value
 		const password = passwordRef.current.value
 
-		try {
-			await signInWithEmailAndPassword(auth, email, password)
-			toast.success('Successfully logged in')
+		const status = await login(email, password)
+		if (status.success) {
 			navigate('/')
-		} catch (error) {
-			toast.error('Failed to login. check your credentials and try again')
 		}
 	}
 

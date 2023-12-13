@@ -1,20 +1,16 @@
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
-import { doc, setDoc } from 'firebase/firestore'
-import { toast } from 'react-toastify'
-import { auth, storage, db } from '../firebase'
 import upload from '../assets/bear.png'
+import { useAuthValues } from '../context/AuthContext'
 
 const Register = () => {
-	const [loading, setLoading] = useState()
 	const nameRef = useRef(null)
 	const emailRef = useRef(null)
 	const passwordRef = useRef(null)
 	const fileRef = useRef()
 
 	const navigate = useNavigate()
+	const { registerUser } = useAuthValues()
 
 	const handleSubmit = async e => {
 		e.preventDefault()
@@ -24,44 +20,10 @@ const Register = () => {
 		const password = passwordRef.current.value
 		const file = fileRef.current.files[0]
 
-		try {
-			//Create user
-			const res = await createUserWithEmailAndPassword(auth, email, password)
+		const status = await registerUser(email, password, displayName, file)
 
-			//Create a unique image name
-			const date = new Date().getTime()
-			const storageRef = ref(storage, `${displayName + date}`)
-
-			await uploadBytesResumable(storageRef, file).then(() => {
-				getDownloadURL(storageRef).then(async downloadURL => {
-					try {
-						//Update profile
-						await updateProfile(res.user, {
-							displayName,
-							photoURL: downloadURL
-						})
-
-						//create user on firestore
-						await setDoc(doc(db, 'users', res.user.uid), {
-							uid: res.user.uid,
-							displayName,
-							email,
-							photoURL: downloadURL
-						})
-
-						//create empty user chats on firestore
-						await setDoc(doc(db, 'userChats', res.user.uid), {})
-						toast.success('Registration successful!')
-						navigate('/')
-					} catch (err) {
-						setLoading(false)
-						toast.error('failed to upload avatar.')
-						console.log(err)
-					}
-				})
-			})
-		} catch (error) {
-			toast.error('failed to register user. please try again.')
+		if (status.success) {
+			navigate('/')
 		}
 	}
 

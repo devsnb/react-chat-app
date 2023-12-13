@@ -28,13 +28,13 @@ body {
 	font-family: 'Poppins', sans-serif;
 }
 
-$primary-100: #ddddf7;
-$primary-200: #a7bcff;
-$primary-300: #8da4f1;
-$primary-400: #7b96ec;
-$primary-500: #5d5b8d;
-$primary-600: #3e3c61;
-$primary-700: #2f2d52;
+$primary-100: #cedebd;
+$primary-200: #c1d8c3;
+$primary-300: #9ad0c2;
+$primary-400: #9ec8b9;
+$primary-500: #5c8374;
+$primary-600: #1b4242;
+$primary-700: #092635;
 $white: #fff;
 $grey-100: #afafaf;
 
@@ -130,7 +130,7 @@ $grey-100: #afafaf;
 		border: 1px solid $white;
 		border-radius: 10px;
 		overflow: hidden;
-		width: 65%;
+		width: 70%;
 		height: 80%;
 		display: flex;
 		@include tablet {
@@ -272,11 +272,6 @@ $grey-100: #afafaf;
 					margin-bottom: 20px;
 
 					.message-info {
-						display: flex;
-						flex-direction: column;
-						color: gray;
-						font-weight: 300;
-
 						img {
 							width: 40px;
 							height: 40px;
@@ -301,10 +296,19 @@ $grey-100: #afafaf;
 						img {
 							width: 50%;
 						}
+
+						span {
+							color: gray;
+							font-weight: 300;
+						}
 					}
 
 					&.owner {
 						flex-direction: row-reverse;
+
+						.message-info {
+							align-items: flex-end;
+						}
 
 						.message-content {
 							align-items: flex-end;
