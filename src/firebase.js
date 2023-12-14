@@ -3,13 +3,20 @@ import { getAuth } from 'firebase/auth'
 import { getStorage } from 'firebase/storage'
 import { getFirestore } from 'firebase/firestore'
 
+const API_KEY = import.meta.env.VITE_FIREBASE_API_KEY
+const AUTH_DOMAIN = import.meta.env.VITE_FIREBASE_AUTH_DOMAIN
+const PROJECT_ID = import.meta.env.VITE_FIREBASE_PROJECT_ID
+const STORAGE_BUCKET = import.meta.env.VITE_FIREBASE_STORAGE_BUCKET
+const MESSAGING_SENDER_ID = import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID
+const APP_ID = import.meta.env.VITE_FIREBASE_APP_ID
+
 const firebaseConfig = {
-	apiKey: 'AIzaSyApumkzrNQLx17Yvvy6cjYjc9u-HeIj3B8',
-	authDomain: 'react-chat-a8123.firebaseapp.com',
-	projectId: 'react-chat-a8123',
-	storageBucket: 'react-chat-a8123.appspot.com',
-	messagingSenderId: '662001749262',
-	appId: '1:662001749262:web:e43c65e3f8a0701b6bdb5f'
+	apiKey: API_KEY,
+	authDomain: AUTH_DOMAIN,
+	projectId: PROJECT_ID,
+	storageBucket: STORAGE_BUCKET,
+	messagingSenderId: MESSAGING_SENDER_ID,
+	appId: APP_ID
 }
 
 // Initialize Firebase
